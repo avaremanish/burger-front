@@ -9,7 +9,6 @@ function App() {
   const [items, setItems] = useState([
     { item: "Bread", quantity: 0, price: 50 },
     { item: "Cheese", quantity: 0, price: 20 },
-    { item: "Paneer", quantity: 0, price: 60 },
     { item: "Aloo", quantity: 0, price: 40 },
   ]);
   const [price, setPrice] = useState(0);
@@ -20,7 +19,6 @@ function App() {
   const [error, setError] = useState("");
   let ingredients = {
     Bread: "====================",
-    Paneer: "*************************",
     Cheese: "-------------------------",
     Aloo: "^^^^^^^^^^^^^^^^",
   };
@@ -135,7 +133,7 @@ function App() {
   // }
   return (
     <div className="App">
-      {/* <h1 className='Heading'> BURGER  MANIA </h1> */}
+      <h1 className='Heading'> BURGER  MANIA </h1>
       {modal && (
         <div className="overlay">
           <div className="modal">
