@@ -133,7 +133,7 @@ function App() {
   // }
   return (
     <div className="App">
-      <h1 className='Heading'> BURGER  MANIA </h1>
+      <h1 className="Heading"> BURGER MANIA </h1>
       {modal && (
         <div className="overlay">
           <div className="modal">
@@ -214,17 +214,16 @@ function App() {
           </div>
         ))}
       </div>
-      <div className="price">Total Amount : {totalPrice}</div>
+
       <div
         className="place-order"
         // onClick={() => {
         //   setModal(true);
         // }}
       >
-        
-       ORDER IT! 
-     
+        ORDER IT!
       </div>
+      <div className="price">Total Amount : {totalPrice}</div>
     </div>
   );
 };
