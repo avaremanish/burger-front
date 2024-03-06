@@ -2,20 +2,44 @@
 .App{
   display: flex;
   justify-content: center;
-  align-items: center;
   flex-direction: column;
+  align-items: center;
 }
 
-.Burger-items{
-display: flex;
-justify-content: center;
-align-items: center;
-
-}
-
-.Burger-item{
+.burger-items{
   display: flex;
   justify-content: center;
-  align-self: center;
-  flex-direction: column;
+  gap: 30px;
+  padding: 10px;
 }
+
+
+.burger-item{
+  display: flex;
+  gap: 40px;
+  border: 2px solid;
+  padding: 10px;
+  border-radius: 20px;
+  font-size: 30px;
+}
+
+button{
+border: none;
+background-color:#ffdfba ;
+border-radius: 50%;
+padding: 10px;
+display: flex;
+align-items: center;
+font-size: 30px;
+}
+
+
+.burger-container{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin-top: 100px;
+  
+}
+
