@@ -1,14 +1,15 @@
-import { useState, useEffect } from "react";
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
-
+import { useEffect, useState } from "react";
+import reactLogo from "./assets/react.svg";
+import viteLogo from "/vite.svg";
+import axios from "axios";
+import "./App.css";
 
 function App() {
   const [quantity, setQuantity] = useState(0);
   const [items, setItems] = useState([
     { item: "Bread", quantity: 0, price: 50 },
     { item: "Cheese", quantity: 0, price: 20 },
+    { item: "Paneer", quantity: 0, price: 60 },
     { item: "Aloo", quantity: 0, price: 40 },
   ]);
   const [price, setPrice] = useState(0);
@@ -19,6 +20,7 @@ function App() {
   const [error, setError] = useState("");
   let ingredients = {
     Bread: "====================",
+    Paneer: "*************************",
     Cheese: "-------------------------",
     Aloo: "^^^^^^^^^^^^^^^^",
   };
@@ -39,7 +41,6 @@ function App() {
       }
     }
   };
-
 
   // to handle the increment of each ingredient
   const handleInc = (name) => {
@@ -68,7 +69,7 @@ function App() {
         : (burgerItems[index].quantity -= 1);
     setItems(burgerItems);
 
-        // This Function remove items from stacks
+    // to remove items from the stack
     const stack = [...itemStack];
     const findIndex = itemStack.findIndex((item) => item === name);
     if (findIndex !== -1) {
@@ -82,55 +83,48 @@ function App() {
     setPrice(addPrice);
   };
 
-  const handleChange = ({target: {value}}) => {
-    setMobile(value)
+  const handleChange = ({ target: { value } }) => {
+    setMobile(value);
     setError("");
-    console.log(/^[0-9]*$/.test(value))
-    if(!/^[0-9]*$/.test(value)){
-      console.log("error")
-      setError("Enter valid number")
+    console.log(/^[0-9]*$/.test(value));
+    if (!/^[0-9]*$/.test(value)) {
+      console.log("error");
+      setError("Enter valid number");
+    } else if (value.length < 10) {
+      setError("Mobile number must be atleast 10");
+    } else setError("");
+  };
+
+  const handleSubmit = async (e) => {
+    try {
+      e.preventDefault();
+      let burger = {};
+      items.map((item) => (burger[item.item] = item.quantity));
+      console.log(burger);
+      if (!mobile) return alert("Please enter mobile number");
+      const { data } = await axios.post("http://localhost:8080/api/order", {
+        mobile,
+        itemStack,
+        price,
+        quantity,
+        burger,
+      });
+
+      alert("burger added to the database");
+      const resetItems = items.map((item) => ({ ...item, quantity: 0 }));
+      setItems(resetItems);
+      setModal(false);
+      setQuantity(0);
+      setItemStack([]);
+      setPrice(0);
+      setTotalPrice(0);
+    } catch (error) {
+      if (error.response.data.message === "Fill all the fields") {
+        alert("Fill all the fields or try again");
+        setModal(false);
+      }
     }
-    else if(value.length < 10){
-      setError("Mobile number must be atleast 10")
-    }else setError("");
-  }
-                          // TEST CASE 
-
-  // const handleSubmit = async(e) => {
-  //   try {
-  //     e.preventDefault();
-  //     let burger = {};
-  //     items.map((item) => burger[item.item] = item.quantity);
-  //     console.log(burger)
-  //     if(!mobile) return alert("Please enter mobile number")
-  //     const {data} = await axios.post("http://localhost:8080/api/order",{
-  //       mobile,
-  //       itemStack,
-  //       price,
-  //       quantity,
-  //       burger
-  //   });
-
-
-
-
-
-    
-  //   alert("burger added to the database");
-  //   const resetItems = items.map(item => ({ ...item, quantity: 0 }));
-  //   setItems(resetItems);
-  //   setModal(false);
-  //   setQuantity(0);
-  //   setItemStack([]);
-  //   setPrice(0);
-  //   setTotalPrice(0);
-  //   } catch (error) {
-  //       if(error.response.data.message === "Fill all the fields"){
-  //         alert("Fill all the fields or try again");
-  //         setModal(false);
-  //       }
-  //   }
-  // }
+  };
   return (
     <div className="App">
       <h1 className="Heading"> BURGER MANIA </h1>
@@ -214,18 +208,16 @@ function App() {
           </div>
         ))}
       </div>
-
+      <div className="price">Total price : {totalPrice}</div>
       <div
         className="place-order"
-        // onClick={() => {
-        //   setModal(true);
-        // }}
-      >
-        ORDER IT!
+        onClick={() => {
+          setModal(true);
+        }}>
+        Place order
       </div>
-      <div className="price">Total Amount : {totalPrice}</div>
     </div>
   );
-};
+}
 
 export default App;
